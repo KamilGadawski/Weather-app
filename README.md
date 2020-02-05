@@ -1,5 +1,8 @@
 # vuejs-app
 
+### Info
+Simple application using public APl. The application has a minimalist look.
+
 ## Project setup
 ```
 npm install
@@ -19,6 +22,3 @@ npm run build
 ```
 npm run lint
 ```
-
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
