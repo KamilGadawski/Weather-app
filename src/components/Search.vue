@@ -3,12 +3,7 @@
     <div class="search">
       <input v-model="searchCity" class="search-input" type="text" placeholder="City" @input="toogleInput">
       <div class="weather-results" v-if="loading">
-        <h2>City: {{ city }} {{ country }}</h2>
-        <p>Temperature: {{ Math.round(temp) }} *C</p>
-        <p>Temperature min.: {{ Math.round(tempMin) }} *C</p>
-        <p>Temperature max.: {{ Math.round(tempMax) }} *C</p>
-        <p>Temperature feels: {{ Math.round(feelsLike) }} *C</p>
-        <p>Pressure: {{ pressure }} hPa</p>
+        <SearchResult :weather="weather"/>
       </div>
     </div>
   </div>
@@ -16,19 +11,16 @@
 <script>
 import axios from 'axios'
 import lodash from 'lodash'
-
+import SearchResult from '@/components/SearchResult'
 export default {
   name: 'Search',
+  components: {
+    SearchResult
+  },
   data() {
     return {
       searchCity: '',
-      city: '',
-      temp: '',
-      feelsLike: '',
-      tempMin: '',
-      tempMax: '',
-      pressure: '',
-      country: '',
+      weather: [],
       loading: false,
       TOKEN: '8d410a8f575db366b3ee6cf4861281ac',
       URL_API: 'https://api.openweathermap.org/data/2.5/weather'
@@ -39,13 +31,7 @@ export default {
     toogleInput: lodash.debounce(function() {
       axios.get(`${this.URL_API}?q=${this.searchCity}&units=metric&appid=${this.TOKEN}`)
         .then((response) => {
-          this.city = response.data.name
-          this.temp = response.data.main.temp
-          this.tempMax = response.data.main.temp_max
-          this.tempMin = response.data.main.temp_min
-          this.feelsLike = response.data.main.feels_like
-          this.pressure = response.data.main.pressure
-          this.country = response.data.sys.country
+          this.weather = response.data
 
           this.loading = true
         })
